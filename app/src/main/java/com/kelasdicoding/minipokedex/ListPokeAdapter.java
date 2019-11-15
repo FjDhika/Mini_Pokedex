@@ -17,6 +17,11 @@ import java.util.ArrayList;
 public class ListPokeAdapter extends RecyclerView.Adapter<ListPokeAdapter.ListViewHolder> {
 
     private ArrayList<Poke> listPoke;
+    private OnClickedCallback onClickedCallback;
+
+    public void setOnClickedCallback(OnClickedCallback onClickedCallback){
+        this.onClickedCallback = onClickedCallback;
+    }
 
     public ListPokeAdapter(ArrayList<Poke> list){
         this.listPoke = list;
@@ -31,14 +36,21 @@ public class ListPokeAdapter extends RecyclerView.Adapter<ListPokeAdapter.ListVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ListViewHolder holder, int position) {
         Poke poke =listPoke.get(position);
         Glide.with(holder.itemView.getContext())
                 .load(poke.getPhoto())
                 .apply(new RequestOptions().override(57, 57))
                 .into(holder.imgPhoto);
         holder.txtName.setText(poke.getName());
-        holder.txtType.setText(poke.getDetail());
+        holder.txtType.setText(poke.getType());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickedCallback.OnClicked(listPoke.get(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
@@ -56,5 +68,9 @@ public class ListPokeAdapter extends RecyclerView.Adapter<ListPokeAdapter.ListVi
             txtName = itemView.findViewById(R.id.txt_poke_name);
             txtType = itemView.findViewById(R.id.txt_poke_type);
         }
+    }
+
+    public interface OnClickedCallback{
+        void OnClicked(Poke data);
     }
 }
