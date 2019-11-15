@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Mini Pokedex</string>
+    <string name="poke_name">Poke_Name</string>
+    <string name="poke_type">Poke_Type</string>
+</resources>
